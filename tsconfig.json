@@ -16,6 +16,12 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@libs/constants": ["libs/constants/src"],
+      "@libs/constants/*": ["libs/constants/src/*"],
+      "@libs/services": ["libs/services/src"],
+      "@libs/services/*": ["libs/services/src/*"]
+    }
   }
 }
