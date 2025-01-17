@@ -1,0 +1,37 @@
+type CategoryCount {
+  category: String!
+  count: Int!
+}
+
+type Document {
+  file: String!
+  title: String!
+}
+
+type Publication {
+  id: ID!
+  highlights: [String!]!
+  type: String!
+  categories: [String!]!
+  jnr: [String!]!
+  title: String!
+  abstract: String
+  publishedDate: String!
+  date: String!
+  isBoardRuling: Boolean!
+  isBroughtToCourt: Boolean!
+  authority: String!
+  body: String
+  documents: [Document!]
+}
+
+type PublicationResponse {
+  totalCount: Int!
+  elapsedMilliseconds: Int!
+  categoryCounts: [CategoryCount!]!
+  publications: [Publication!]!
+}
+
+type Query {
+  getPublications: PublicationResponse!
+}
