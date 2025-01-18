@@ -26,3 +26,10 @@ export const publications = pgTable('publications', {
   body: varchar('body').notNull(),
   ...timestampedEntity,
 });
+
+export const publicationDocuments = pgTable('publicationDocuments', {
+  publicationId: uuid('publicationId').notNull(),
+  documentId: uuid('documentId').notNull(),
+  ...timestampedEntity,
+});
+
