@@ -66,7 +66,7 @@ export interface IMutation {
 }
 
 export interface IQuery {
-    fetchPublication(id: string): Publication | Promise<Publication>;
+    fetchPublication(publicationId: string): Publication | Promise<Publication>;
 }
 
 type Nullable<T> = T | null;

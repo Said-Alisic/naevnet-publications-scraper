@@ -56,5 +56,5 @@ type Mutation {
 }
 
 type Query {
-  fetchPublication(id: String!): Publication!
+  fetchPublication(publicationId: String!): Publication!
 }
