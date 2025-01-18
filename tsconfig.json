@@ -24,8 +24,8 @@
       "@libs/services/*": ["libs/services/src/*"],
       "@libs/graphql": ["libs/graphql/src"],
       "@libs/graphql/*": ["libs/graphql/src/*"],
-      "@libs/interfaces": ["libs/interfaces/src"],
-      "@libs/interfaces/*": ["libs/interfaces/src/*"]
+      "@libs/core": ["libs/core/src"],
+      "@libs/core/*": ["libs/core/src/*"]
     }
   }
 }
