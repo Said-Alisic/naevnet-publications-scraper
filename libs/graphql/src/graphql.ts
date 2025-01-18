@@ -8,6 +8,20 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export interface QueryRequestInput {
+    categories: CategoryInput[];
+    query: string;
+    sort: string;
+    types: string[];
+    skip: number;
+    size: number;
+}
+
+export interface CategoryInput {
+    id: string;
+    title: string;
+}
+
 export interface CategoryCount {
     category: string;
     count: number;
@@ -26,10 +40,10 @@ export interface Publication {
     jnr: string[];
     title: string;
     abstract?: Nullable<string>;
-    publishedDate: string;
+    published_date: string;
     date: string;
-    isBoardRuling: boolean;
-    isBroughtToCourt: boolean;
+    is_board_ruling: boolean;
+    is_brought_to_court: boolean;
     authority: string;
     body?: Nullable<string>;
     documents?: Nullable<Document[]>;
@@ -42,8 +56,17 @@ export interface PublicationResponse {
     publications: Publication[];
 }
 
+export interface Category {
+    id: string;
+    title: string;
+}
+
+export interface IMutation {
+    scrapePublications(): PublicationResponse | Promise<PublicationResponse>;
+}
+
 export interface IQuery {
-    getPublications(): PublicationResponse | Promise<PublicationResponse>;
+    fetchPublication(id: string): Publication | Promise<Publication>;
 }
 
 type Nullable<T> = T | null;

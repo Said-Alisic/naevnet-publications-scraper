@@ -16,10 +16,10 @@ type Publication {
   jnr: [String!]!
   title: String!
   abstract: String
-  publishedDate: String!
+  published_date: String!
   date: String!
-  isBoardRuling: Boolean!
-  isBroughtToCourt: Boolean!
+  is_board_ruling: Boolean!
+  is_brought_to_court: Boolean!
   authority: String!
   body: String
   documents: [Document!]
@@ -32,6 +32,29 @@ type PublicationResponse {
   publications: [Publication!]!
 }
 
+type Category {
+  id: ID!
+  title: String!
+}
+
+input QueryRequestInput {
+  categories: [CategoryInput!]!
+  query: String!
+  sort: String!
+  types: [String!]!
+  skip: Int!
+  size: Int!
+}
+
+input CategoryInput {
+  id: ID!
+  title: String!
+}
+
+type Mutation {
+  scrapePublications: PublicationResponse!
+}
+
 type Query {
-  getPublications: PublicationResponse!
+  fetchPublication(id: String!): Publication!
 }
