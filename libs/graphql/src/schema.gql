@@ -1,3 +1,34 @@
+# === Inputs ===
+input CategoryInput {
+  id: ID!
+  title: String!
+}
+
+input ScrapePublicationsPayloadInput {
+  categories: [String!]!
+  query: String!
+  sort: String!
+  types: [String!]!
+  skip: Int!
+  size: Int!
+}
+
+input FetchPublicationsInput {
+  authority: String
+  isBoardRuling: Boolean
+  isBroughtToCourt: Boolean
+  title: String
+  page: Int
+  limit: Int
+}
+input FetchPublicationsInput {
+  authority: String
+  isBoardRuling: Boolean
+  isBroughtToCourt: Boolean
+  title: String
+}
+
+# === Types ===
 type CategoryCount {
   category: String!
   count: Int!
@@ -47,26 +78,19 @@ type ScrapePublicationsResponse {
   data: ScrapePublicationsJobData!
 }
 
-input CategoryInput {
-  id: ID!
-  title: String!
-}
-
-input ScrapePublicationsPayloadInput {
-  categories: [String!]!
-  query: String!
-  sort: String!
-  types: [String!]!
-  skip: Int!
-  size: Int!
-}
-
+# === Mutations ===
 type Mutation {
   scrapePublications(
     payload: ScrapePublicationsPayloadInput!
   ): ScrapePublicationsResponse!
 }
 
+# === Queries ===
 type Query {
   fetchPublication(publicationId: String!): Publication!
+  fetchPublications(
+    filter: FetchPublicationsInput
+    page: Int
+    limit: Int
+  ): [Publication!]!
 }

@@ -1,0 +1,1 @@
+ALTER TABLE "publications" ALTER COLUMN "authority" DROP NOT NULL;

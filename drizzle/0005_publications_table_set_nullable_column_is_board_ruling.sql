@@ -1,0 +1,1 @@
+ALTER TABLE "publications" ALTER COLUMN "is_board_ruling" DROP NOT NULL;

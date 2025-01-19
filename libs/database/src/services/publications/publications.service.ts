@@ -3,7 +3,7 @@ import { DrizzleProvider } from '../../drizzle.provider';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import * as schema from '../../schemas';
 import { PublicationsInsert, PublicationsSelect } from '../../types';
-import { eq, or } from 'drizzle-orm';
+import { and, eq, ilike, or } from 'drizzle-orm';
 
 @Injectable()
 export class PublicationsService {
@@ -52,4 +52,60 @@ export class PublicationsService {
     // so we get the first element in the response array
     return res[0];
   }
+
+  async selectPublications(params: {
+    filter?: {
+      authority?: string;
+      isBoardRuling?: boolean;
+      isBroughtToCourt?: boolean;
+      title?: string;
+    }
+    page?: number;
+    limit?: number;
+  }): Promise<PublicationsSelect[]> {
+    const {
+      filter: {
+        authority,
+        isBoardRuling,
+        isBroughtToCourt,
+        title },
+      page = 1,
+      limit = 10
+    } = params;
+
+    // Collect conditions dynamically
+    const conditions = [];
+
+    if (authority) {
+      conditions.push(eq(schema.publications.authority, authority));
+    }
+
+    if (typeof isBoardRuling === 'boolean') {
+      conditions.push(eq(schema.publications.is_board_ruling, isBoardRuling));
+    }
+
+    if (typeof isBroughtToCourt === 'boolean') {
+      conditions.push(eq(schema.publications.is_brought_to_court, isBroughtToCourt));
+    }
+
+    if (title) {
+      conditions.push(ilike(schema.publications.title, `%${title}%`));
+    }
+
+    const query = this.pg
+      .select()
+      .from(schema.publications)
+      .where(and(...conditions))
+      .limit(limit)
+      .offset((page - 1) * limit);
+
+    const res = await query;
+
+    if (res.length <= 0) {
+      throw new Error('Publications not found');
+    }
+
+    return res;
+  }
+
 }

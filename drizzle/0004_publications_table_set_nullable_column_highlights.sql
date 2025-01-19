@@ -1,0 +1,1 @@
+ALTER TABLE "publications" ALTER COLUMN "highlights" DROP NOT NULL;

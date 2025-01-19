@@ -22,6 +22,15 @@ export interface ScrapePublicationsPayloadInput {
     size: number;
 }
 
+export interface FetchPublicationsInput {
+    authority?: Nullable<string>;
+    isBoardRuling?: Nullable<boolean>;
+    isBroughtToCourt?: Nullable<boolean>;
+    title?: Nullable<string>;
+    page?: Nullable<number>;
+    limit?: Nullable<number>;
+}
+
 export interface CategoryCount {
     category: string;
     count: number;
@@ -77,6 +86,7 @@ export interface IMutation {
 
 export interface IQuery {
     fetchPublication(publicationId: string): Publication | Promise<Publication>;
+    fetchPublications(filter?: Nullable<FetchPublicationsInput>, page?: Nullable<number>, limit?: Nullable<number>): Publication[] | Promise<Publication[]>;
 }
 
 type Nullable<T> = T | null;

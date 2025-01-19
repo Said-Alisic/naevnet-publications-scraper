@@ -1,0 +1,1 @@
+ALTER TABLE "publications" ALTER COLUMN "is_brought_to_court" DROP NOT NULL;

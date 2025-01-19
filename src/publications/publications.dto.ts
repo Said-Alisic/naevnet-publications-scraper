@@ -1,7 +1,7 @@
 import { InputType, Field } from '@nestjs/graphql';
 
 @InputType()
-export class ScrapePublicationsPayload {
+export class ScrapePublicationsPayloadInput {
   @Field(() => [String])
   categories: string[];
 
@@ -19,4 +19,20 @@ export class ScrapePublicationsPayload {
 
   @Field(() => Number)
   size: number;
+}
+
+
+@InputType()
+export class FetchPublicationsInput {
+  @Field({ nullable: true })
+  authority?: string;
+
+  @Field({ nullable: true })
+  isBoardRuling?: boolean;
+
+  @Field({ nullable: true })
+  isBroughtToCourt?: boolean;
+
+  @Field({ nullable: true })
+  title?: string;
 }

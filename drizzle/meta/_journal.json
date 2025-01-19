@@ -15,6 +15,48 @@
       "when": 1737225896185,
       "tag": "0001_create_table_publication_documents",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1737319410848,
+      "tag": "0002_publications_table_set_nullable_column_categories",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1737319484209,
+      "tag": "0003_publications_table_set_nullable_column_jnr",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1737319491405,
+      "tag": "0004_publications_table_set_nullable_column_highlights",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1737319538319,
+      "tag": "0005_publications_table_set_nullable_column_is_board_ruling",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1737319548965,
+      "tag": "0006_publications_table_set_nullable_column_is_brought_to_court",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1737319592013,
+      "tag": "0007_publications_table_set_nullable_column_authority",
+      "breakpoints": true
     }
   ]
 }
