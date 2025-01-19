@@ -25,20 +25,15 @@ type Publication {
   documents: [Document!]
 }
 
-type PublicationResponse {
+type FetchPublicationsResponse {
   totalCount: Int!
   elapsedMilliseconds: Int!
   categoryCounts: [CategoryCount!]!
   publications: [Publication!]!
 }
 
-type Category {
-  id: ID!
-  title: String!
-}
-
-input PublicationsRequestInput {
-  categories: [CategoryInput!]!
+type ScrapePublicationsJobData {
+  categories: [String!]!
   query: String!
   sort: String!
   types: [String!]!
@@ -46,12 +41,18 @@ input PublicationsRequestInput {
   size: Int!
 }
 
+type ScrapePublicationsResponse {
+  name: String!
+  id: String!
+  data: ScrapePublicationsJobData!
+}
+
 input CategoryInput {
   id: ID!
   title: String!
 }
 
-input ScrapePublicationsPayload {
+input ScrapePublicationsPayloadInput {
   categories: [String!]!
   query: String!
   sort: String!
@@ -61,7 +62,9 @@ input ScrapePublicationsPayload {
 }
 
 type Mutation {
-  scrapePublications(payload: ScrapePublicationsPayload!): PublicationResponse!
+  scrapePublications(
+    payload: ScrapePublicationsPayloadInput!
+  ): ScrapePublicationsResponse!
 }
 
 type Query {

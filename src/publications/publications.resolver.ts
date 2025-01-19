@@ -1,58 +1,31 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { lastValueFrom } from 'rxjs';
-import { MFKN_NAEVNENESHUS_API_URL } from '@libs/constants/api-urls.constant';
-import { Publication, PublicationResponse } from '@libs/graphql/graphql';
+import { Publication } from '@libs/graphql/graphql';
 import { PublicationsService } from 'libs/database/src';
 import { ScrapePublicationsPayload } from './publication.dto';
+import { PublicationsQueue } from '@libs/queue';
 
 
 @Resolver('Publications')
 @Injectable()
 export class PublicationsResolver {
-  constructor(private readonly httpService: HttpService, private readonly publicationsService: PublicationsService) { }
-
+  constructor(private readonly publicationsQueue: PublicationsQueue, private readonly publicationsService: PublicationsService) { }
 
   @Mutation('scrapePublications')
   async scrapePublications(
     @Args('payload', { type: () => ScrapePublicationsPayload }) payload: ScrapePublicationsPayload,
-  ): Promise<PublicationResponse> {
-    const url = MFKN_NAEVNENESHUS_API_URL + '/search';
-
+  ): Promise<{ name: string; id: string; data: any }> {
     try {
-      // Send request to the MFKN API
-      const response = await lastValueFrom(
-        this.httpService.post<PublicationResponse>(url, payload),
-      );
+      // Schedule the scraping job and return its details
+      const job = await this.publicationsQueue.scheduleScraping(payload);
 
-      // Transform the scraped data into the format that the database service expects
-      const insertValues = response.data.publications.map((publication) => ({
-        publicationId: publication.id,
-        highlights: publication.highlights,
-        type: publication.type,
-        categories: publication.categories,
-        jnr: publication.jnr,
-        title: publication.title,
-        abstract: publication.abstract,
-        published_date: publication.published_date,
-        date: publication.date,
-        is_board_ruling: publication.is_board_ruling,
-        is_brought_to_court: publication.is_brought_to_court,
-        authority: publication.authority,
-        body: publication.body,
-      }));
-
-      await this.publicationsService.insertPublications({ data: insertValues });
-
-      return response.data;
+      return job;
     } catch (error) {
-      throw new Error('Failed to scrape publications: ' + error.message);
+      console.error('Failed to schedule scraping job:', error);
+      throw new Error('Failed to schedule scraping job.');
     }
   }
 
-
-  // TODO: Implement the fetching from database logic here
   @Query('fetchPublication')
   async fetchPublication(
     @Args('publicationId', { type: () => String }) publicationId: string,

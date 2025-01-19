@@ -1,6 +1,6 @@
 import { Queue, Worker, Job } from 'bullmq';
 import { Injectable } from '@nestjs/common';
-import { ScrapePublicationsPayload } from '@libs/graphql/graphql';
+import { ScrapePublicationsPayloadInput } from '@libs/graphql/graphql';
 import { PublicationsService } from 'libs/database/src';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
@@ -30,7 +30,7 @@ export class PublicationsQueue {
     if (!this.worker) {
       this.worker = new Worker(
         'scrapePublications',
-        async (job: Job<ScrapePublicationsPayload>) => {
+        async (job: Job<ScrapePublicationsPayloadInput>) => {
           try {
             await this.scrapePublications(job.data);
           } catch (error) {
@@ -50,7 +50,7 @@ export class PublicationsQueue {
     }
   }
 
-  async scheduleScraping(payload: ScrapePublicationsPayload, delayInMs = 100): Promise<{
+  async scheduleScraping(payload: ScrapePublicationsPayloadInput, delayInMs = 100): Promise<{
     name: string;
     id: string;
     data: any;
@@ -66,7 +66,7 @@ export class PublicationsQueue {
     };
   }
 
-  private async scrapePublications(payload: ScrapePublicationsPayload) {
+  private async scrapePublications(payload: ScrapePublicationsPayloadInput) {
     const url = MFKN_NAEVNENESHUS_API_URL + '/search';
 
     const response = await lastValueFrom(

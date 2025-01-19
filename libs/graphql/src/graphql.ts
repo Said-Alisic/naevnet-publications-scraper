@@ -8,21 +8,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export interface PublicationsRequestInput {
-    categories: CategoryInput[];
-    query: string;
-    sort: string;
-    types: string[];
-    skip: number;
-    size: number;
-}
-
 export interface CategoryInput {
     id: string;
     title: string;
 }
 
-export interface ScrapePublicationsPayload {
+export interface ScrapePublicationsPayloadInput {
     categories: string[];
     query: string;
     sort: string;
@@ -58,20 +49,30 @@ export interface Publication {
     documents?: Nullable<Document[]>;
 }
 
-export interface PublicationResponse {
+export interface FetchPublicationsResponse {
     totalCount: number;
     elapsedMilliseconds: number;
     categoryCounts: CategoryCount[];
     publications: Publication[];
 }
 
-export interface Category {
+export interface ScrapePublicationsJobData {
+    categories: string[];
+    query: string;
+    sort: string;
+    types: string[];
+    skip: number;
+    size: number;
+}
+
+export interface ScrapePublicationsResponse {
+    name: string;
     id: string;
-    title: string;
+    data: ScrapePublicationsJobData;
 }
 
 export interface IMutation {
-    scrapePublications(payload: ScrapePublicationsPayload): PublicationResponse | Promise<PublicationResponse>;
+    scrapePublications(payload: ScrapePublicationsPayloadInput): ScrapePublicationsResponse | Promise<ScrapePublicationsResponse>;
 }
 
 export interface IQuery {
