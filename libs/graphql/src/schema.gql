@@ -37,7 +37,7 @@ type Category {
   title: String!
 }
 
-input QueryRequestInput {
+input PublicationsRequestInput {
   categories: [CategoryInput!]!
   query: String!
   sort: String!
@@ -51,8 +51,17 @@ input CategoryInput {
   title: String!
 }
 
+input ScrapePublicationsPayload {
+  categories: [String!]!
+  query: String!
+  sort: String!
+  types: [String!]!
+  skip: Int!
+  size: Int!
+}
+
 type Mutation {
-  scrapePublications: PublicationResponse!
+  scrapePublications(payload: ScrapePublicationsPayload!): PublicationResponse!
 }
 
 type Query {

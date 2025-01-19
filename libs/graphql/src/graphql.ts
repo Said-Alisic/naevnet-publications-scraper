@@ -8,7 +8,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export interface QueryRequestInput {
+export interface PublicationsRequestInput {
     categories: CategoryInput[];
     query: string;
     sort: string;
@@ -20,6 +20,15 @@ export interface QueryRequestInput {
 export interface CategoryInput {
     id: string;
     title: string;
+}
+
+export interface ScrapePublicationsPayload {
+    categories: string[];
+    query: string;
+    sort: string;
+    types: string[];
+    skip: number;
+    size: number;
 }
 
 export interface CategoryCount {
@@ -62,7 +71,7 @@ export interface Category {
 }
 
 export interface IMutation {
-    scrapePublications(): PublicationResponse | Promise<PublicationResponse>;
+    scrapePublications(payload: ScrapePublicationsPayload): PublicationResponse | Promise<PublicationResponse>;
 }
 
 export interface IQuery {
