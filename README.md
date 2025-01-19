@@ -2,72 +2,139 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+MFKN Nævneneshus API publications scraper built with NestJS.
 
-## Installation
+## Setup
+
+### Prepare Environment Variables
+
+- Create new `.env` file in the root folder
+  > See `.example.env` for example values
+
+### Install Docker
+
+- Install [Docker Desktop](https://www.docker.com/get-started/)
+- Install [docker-compose](https://formulae.brew.sh/formula/docker-compose) (MacOS brew installation)
+
+### Running the app
 
 ```bash
 $ pnpm install
-```
 
-## Running the app
+$ docker-compose
 
-```bash
-# development
-$ pnpm run start
+$ npx drizzle-kit push
 
-# watch mode
 $ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
 ```
 
-## Test
+### API testing
 
-```bash
-# unit tests
-$ pnpm run test
+- Open an API testing tool, such as [Postman](https://www.postman.com/) or [Insomnia](https://insomnia.rest/) to test the GraphQL Mutations and Queries
 
-# e2e tests
-$ pnpm run test:e2e
+#### `scrapePublications`
 
-# test coverage
-$ pnpm run test:cov
+- Run the below mutation to send a request to the GraphQL API and schedule a _job_ in **Redis** that will scrape the MFKN Nævneneshus API for `publications` data
+
+  > ⚠️ Publications data must be scraped before using the `fetchPublication` or `fetchPublications` queries, in order to populate the database with some `publications` data to fetch with the queries
+
+```json
+{
+  "query": "mutation ($payload: ScrapePublicationsPayloadInput!) { scrapePublications(payload: $payload) { name id data { categories query sort types skip size } } }",
+  "variables": {
+    "payload": {
+      "categories": [],
+      "query": "",
+      "sort": "Score",
+      "types": [],
+      "skip": 0,
+      "size": 100
+    }
+  }
+}
 ```
 
-## Support
+#### `fetchPublication`
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- Run the below query to send a request to the GraphQL API to fetch a `publication` by its original `id` field in the MFKN Nævneneshus API
 
-## Stay in touch
+```json
+{
+  "query": "query ($publicationId: String!) { fetchPublication(publicationId: $publicationId) { id highlights type categories jnr title abstract published_date date is_board_ruling is_brought_to_court authority body documents { file title } } }",
+  "variables": {
+    "publicationId": "e2beb7d0-7c45-4b92-aad8-f129485e62f4"
+  }
+}
+```
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- Alternatively, use the below query to retrieve only partial `publication` data
 
-## License
+```json
+{
+  "query": "query ($publicationId: String!) { fetchPublication(publicationId: $publicationId) { id highlights type jnr title abstract authority body } }",
+  "variables": {
+    "publicationId": "a4eea5fe-a1aa-4715-bd6a-cad4c464dcd1"
+    // "publicationId": "e2beb7d0-7c45-4b92-aad8-f129485e62f4"
+  }
+}
+```
 
-Nest is [MIT licensed](LICENSE).
+#### `fetchPublications`
+
+- Run the below query to send a request to the GraphQL API to fetch `publications` from the database using pagination
+
+```json
+{
+  "query": "query ($filter: FetchPublicationsInput, $page: Int, $limit: Int) { fetchPublications(filter: $filter, page: $page, limit: $limit) { type jnr title abstract published_date date is_board_ruling is_brought_to_court authority } }",
+  "variables": {
+    "page": 2,
+    "limit": 5
+  }
+}
+```
+
+- Alternatively, use the below query to fetch `publications` from the database using both pagination and filtering
+
+```json
+{
+  "query": "query ($filter: FetchPublicationsInput, $page: Int, $limit: Int) { fetchPublications(filter: $filter, page: $page, limit: $limit) { type jnr title abstract published_date date is_board_ruling is_brought_to_court authority } }",
+  "variables": {
+    "filter": {
+      "authority": "",
+      "isBoardRuling": true,
+      "isBroughtToCourt": false,
+      "title": "Fredericia"
+    },
+    "page": 10,
+    "limit": 5
+  }
+}
+```
+
+## Considerations
+
+### Architecture
+
+#### Libraries
+
+...
+
+#### GraphQL
+
+...
+
+#### Database
+
+...
+
+### Production Preparation
+
+#### Security
+
+...
+
+#### Deployments
+
+...
