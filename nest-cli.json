@@ -16,15 +16,6 @@
         "tsConfigPath": "libs/constants/tsconfig.lib.json"
       }
     },
-    "services": {
-      "type": "library",
-      "root": "libs/services",
-      "entryFile": "index",
-      "sourceRoot": "libs/services/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/services/tsconfig.lib.json"
-      }
-    },
     "graphql": {
       "type": "library",
       "root": "libs/graphql",

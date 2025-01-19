@@ -89,7 +89,6 @@
     ],
     "moduleNameMapper": {
       "^@lib/constants(|/.*)$": "<rootDir>/libs/constants/src/$1",
-      "^@services/services(|/.*)$": "<rootDir>/libs/services/src/$1",
       "^@libs/graphql(|/.*)$": "<rootDir>/libs/graphql/src/$1",
       "^@libs/interfaces(|/.*)$": "<rootDir>/libs/interfaces/src/$1",
       "^@libs/core(|/.*)$": "<rootDir>/libs/core/src/$1",

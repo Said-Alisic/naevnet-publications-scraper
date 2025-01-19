@@ -18,36 +18,14 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@libs/constants": [
-        "libs/constants/src"
-      ],
-      "@libs/constants/*": [
-        "libs/constants/src/*"
-      ],
-      "@libs/services": [
-        "libs/services/src"
-      ],
-      "@libs/services/*": [
-        "libs/services/src/*"
-      ],
-      "@libs/graphql": [
-        "libs/graphql/src"
-      ],
-      "@libs/graphql/*": [
-        "libs/graphql/src/*"
-      ],
-      "@libs/core": [
-        "libs/core/src"
-      ],
-      "@libs/core/*": [
-        "libs/core/src/*"
-      ],
-      "@libs/queue": [
-        "libs/queue/src"
-      ],
-      "@libs/queue/*": [
-        "libs/queue/src/*"
-      ]
+      "@libs/constants": ["libs/constants/src"],
+      "@libs/constants/*": ["libs/constants/src/*"],
+      "@libs/graphql": ["libs/graphql/src"],
+      "@libs/graphql/*": ["libs/graphql/src/*"],
+      "@libs/core": ["libs/core/src"],
+      "@libs/core/*": ["libs/core/src/*"],
+      "@libs/queue": ["libs/queue/src"],
+      "@libs/queue/*": ["libs/queue/src/*"]
     }
   }
 }
